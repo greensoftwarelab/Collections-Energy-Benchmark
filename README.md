@@ -93,7 +93,7 @@ Example
 | 9 | values |
 | 10 | iterateAll |
 
-Contact
+Contact and other information
 --------------------------------------------------------------
-
+- GREENS'2016 Paper - {http://greenlab.di.uminho.pt/wp-content/uploads/2016/04/greens.pdf}
 - Rui Pereira {ruipereira@di.uminho.pt}
