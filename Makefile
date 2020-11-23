@@ -12,3 +12,4 @@ lib_shared_CPUScaler:
 
 clean:
 	rm -f lib_share_CPUScaler $(TARGET)
+	
