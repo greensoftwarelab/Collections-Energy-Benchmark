@@ -9,6 +9,8 @@
  *
  * Table: CPUID Signature Values of DisplayFamily_DisplayModel
  */
+#define KABYLAKE             0x8eU
+#define BROADWELL            0xD4FU
 #define SANDYBRIDGE          0x2AU
 #define SANDYBRIDGE_EP       0x2DU
 #define IVYBRIDGE            0x3AU
@@ -62,8 +64,8 @@ extern uint64_t num_pkg; //number of packages for current machine
 
 extern int coreNum;
 
-//void
-//get_cpu_model(void);
+void
+get_cpu_model(void);
 
 void 
 parse_apic_id(cpuid_info_t info_l0, cpuid_info_t info_l1, APIC_ID_t *my_id);

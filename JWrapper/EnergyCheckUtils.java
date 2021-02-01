@@ -1,34 +1,18 @@
 package JWrapper;
-import java.lang.reflect.Field;
-public class EnergyCheckUtils {
-	public native static int scale(int freq);
-	public native static int[] freqAvailable();
 
-	public native static double[] GetPackagePowerSpec();
-	public native static double[] GetDramPowerSpec();
-	public native static void SetPackagePowerLimit(int socketId, int level, double costomPower);
-	public native static void SetPackageTimeWindowLimit(int socketId, int level, double costomTimeWin);
-	public native static void SetDramTimeWindowLimit(int socketId, int level, double costomTimeWin);
-	public native static void SetDramPowerLimit(int socketId, int level, double costomPower);
+public class EnergyCheckUtils {
+
 	public native static int ProfileInit();
 	public native static int GetSocketNum();
 	public native static String EnergyStatCheck();
 	public native static void ProfileDealloc();
-	public native static void SetPowerLimit(int ENABLE);
 
 	public static int wraparoundValue;
 	public static int socketNum;
 
 	public static void init(){
-		System.setProperty("java.library.path", System.getProperty("user.dir"));
-//				System.out.print(System.getProperty("user.dir"));
-		try {
-			Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
-			fieldSysPath.setAccessible(true);
-			fieldSysPath.set(null, null);
-		} catch (Exception e) { }
-
-		System.loadLibrary("CPUScaler");
+		String libPath = System.getProperty("user.dir") + "/" + "libCPUScaler.so";
+		System.load(libPath);
 		wraparoundValue = ProfileInit();
 		socketNum = GetSocketNum();
 	}
@@ -60,7 +44,6 @@ public class EnergyCheckUtils {
 			double[] stats = new double[3*socketNum];
 			int count = 0;
 
-
 			for(int i = 0; i < perSockEner.length; i++) {
 				String[] energy = perSockEner[i].split("#");
 				for(int j = 0; j < energy.length; j++) {
@@ -77,8 +60,18 @@ public class EnergyCheckUtils {
 		ProfileDealloc();
 	}
 
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws InterruptedException {
+		EnergyCheckUtils.init();	
+		
+		double[] before, after;
+		for (int x = 0; x < 25; x++) {
+			before = getEnergyStats();
+			Thread.sleep(100);
+			after = getEnergyStats();
+			System.out.println(String.format("[sleep 100ms] dram/gpu: %4f; core: %4f; package: %4f", after[0]-before[0], after[1]-before[1], after[2]-before[2]));
+		}
 
+		EnergyCheckUtils.profileDealloc();
 	}
 }
 

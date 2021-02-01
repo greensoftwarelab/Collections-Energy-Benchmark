@@ -112,6 +112,8 @@ JNIEXPORT jstring JNICALL Java_JWrapper_EnergyCheckUtils_EnergyStatCheck(JNIEnv 
 		//allocate space for string
 		//printf("%" PRIu32 "\n", cpu_model);
 		switch(cpu_model) {
+			case BROADWELL:
+			case KABYLAKE:
 			case SANDYBRIDGE_EP:
 			case HASWELL1:
 			case HASWELL2:
